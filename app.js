@@ -6,7 +6,7 @@ let leftImageElement=document.getElementById('left-image');
 let midImageElement=document.getElementById('mid-image');
 let rightImageElement=document.getElementById('right-image');
 
-let maxAttempts=8;
+let maxAttempts=25;
 let userAttemptsCounter=0;
 
 // the random number index for the left image
@@ -22,7 +22,7 @@ let rightImageIndex;
 let productNames=[];
 let votes=[];
 let times=[];
-let images=[22,22,22];
+let images=[];
 
 
 function Product(name,source) {
@@ -82,16 +82,16 @@ function renderImages() {
 
 
 
-  while (leftImageIndex===rightImageIndex||leftImageIndex===midImageIndex||midImageIndex===rightImageIndex||images.includes(leftImageIndex)||images.includes(midImageIndex)||images.includes(leftImageIndex)) {
+  while (leftImageIndex===rightImageIndex||leftImageIndex===midImageIndex||midImageIndex===rightImageIndex||images.includes(leftImageIndex)||images.includes(midImageIndex)||images.includes(rightImageIndex)) {
     rightImageIndex=generateRandomIndex();
-    midImageIndex=generateRandomIndex();  
-    // leftImageIndex=generateRandomIndex();
-    images[0]= rightImageIndex;
+    midImageIndex=generateRandomIndex(); 
+    leftImageIndex=generateRandomIndex(); 
+    images=[];
+    images[0]= leftImageIndex;
     images[1]= midImageIndex;
     images[2]= rightImageIndex;
     
-console.log(images[0]);
-break;
+
   }
 
   // console.log(images[0]);
