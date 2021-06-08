@@ -6,7 +6,7 @@ let leftImageElement=document.getElementById('left-image');
 let midImageElement=document.getElementById('mid-image');
 let rightImageElement=document.getElementById('right-image');
 
-let maxAttempts=25;
+let maxAttempts=10;
 let userAttemptsCounter=0;
 
 // the random number index for the left image
@@ -72,34 +72,39 @@ function generateRandomIndex() {
 function renderImages() {
   
   leftImageIndex=generateRandomIndex();
-  Product.allProducts[leftImageIndex].time++;
+ 
   
   midImageIndex=generateRandomIndex();
-  Product.allProducts[midImageIndex].time++;
+  
   
   rightImageIndex=generateRandomIndex();
-  Product.allProducts[rightImageIndex].time++;
-
+ 
 
 
   while (leftImageIndex===rightImageIndex||leftImageIndex===midImageIndex||midImageIndex===rightImageIndex||images.includes(leftImageIndex)||images.includes(midImageIndex)||images.includes(rightImageIndex)) {
-    rightImageIndex=generateRandomIndex();
+  
+    leftImageIndex=generateRandomIndex();
     midImageIndex=generateRandomIndex(); 
-    leftImageIndex=generateRandomIndex(); 
+    rightImageIndex=generateRandomIndex();
+  }
     images=[];
-    images[0]= leftImageIndex;
-    images[1]= midImageIndex;
-    images[2]= rightImageIndex;
+    images.push(leftImageIndex,midImageIndex,rightImageIndex);
+    // images[0]= leftImageIndex;
+    // images[1]= midImageIndex;
+    // images[2]= rightImageIndex;
     
 
-  }
+  
 
   // console.log(images[0]);
   // make the source for the left and right image equal to the random goat source
   leftImageElement.src=Product.allProducts[leftImageIndex].source;
+  Product.allProducts[leftImageIndex].time++;
   midImageElement.src=Product.allProducts[midImageIndex].source;
-
+  Product.allProducts[midImageIndex].time++;
   rightImageElement.src=Product.allProducts[rightImageIndex].source;
+  Product.allProducts[rightImageIndex].time++;
+
 }
 renderImages();
 
@@ -109,11 +114,13 @@ renderImages();
 
 container.addEventListener('click',handleUserClick);
 
+ 
+
+
     
 let button=document.getElementById('btn');
 
-
-
+button.hidden=true;
 function handleUserClick(event) {
   
   console.log(event.target.id);
@@ -130,8 +137,12 @@ function handleUserClick(event) {
       Product.allProducts[leftImageIndex].votes++}
       else if (event.target.id==='mid-image'){
         Product.allProducts[midImageIndex].votes++
-    }else{
+    } else if (event.target.id==='right-image'){
       Product.allProducts[rightImageIndex].votes++
+  }else{
+      alert('please click on the images');
+      userAttemptsCounter--;
+    
     }
 
     // console.log(Product.allProducts);
@@ -139,12 +150,22 @@ function handleUserClick(event) {
 
 
   } else{ 
-    alert("click the button")
+   
+button.hidden=false;
+    // alert("click the button")
     button.addEventListener('click',showResult); 
     // showResult();
+    container.removeEventListener('click',handleUserClick);
+     
+    for (let i = 0; i < Product.allProducts.length; i++) {
+
+      votes.push(Product.allProducts[i].votes);
+      times.push(Product.allProducts[i].time);
+    }
+    chart();
+    
 
 }
-
 }
 
 function showResult() {
@@ -159,16 +180,9 @@ function showResult() {
       productResult.textContent=`${Product.allProducts[i].name} had ${Product.allProducts[i].votes} votes, and was seen ${Product.allProducts[i].time} times`;
       
     }
-    container.removeEventListener('click',handleUserClick);
-    
-    
-    for (let i = 0; i < Product.allProducts.length; i++) {
 
-      votes.push(Product.allProducts[i].votes);
-      times.push(Product.allProducts[i].time);
-    }
-
-    chart();
+    button.removeEventListener('click',showResult);  
+   
   }
   
 
