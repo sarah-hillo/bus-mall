@@ -24,12 +24,15 @@ let votes=[];
 let times=[];
 let images=[];
 
+let vote1=0;
+let time1=0;
+
 
 function Product(name,source) {
   this.name=name;
   this.source=source;
-  this.votes=0;
- this.time=0;
+  this.votes=vote1;
+ this.time=time1;
 
  productNames.push(this.name);
   Product.allProducts.push(this);
@@ -134,7 +137,8 @@ function handleUserClick(event) {
     if (event.target.id==='left-image') {
       // the random number
       // Product.allProducts[5].votes++
-      Product.allProducts[leftImageIndex].votes++}
+      Product.allProducts[leftImageIndex].votes++ ;
+    }
       else if (event.target.id==='mid-image'){
         Product.allProducts[midImageIndex].votes++
     } else if (event.target.id==='right-image'){
@@ -247,4 +251,37 @@ function showResult() {
     });
       
   }
-   
+
+   updateStorage();
+
+//   Product.allProducts=[];
+
+
+function updateStorage() {
+  console.log( Product.allProducts); 
+  
+  // console.log(string);
+  let arrayString=JSON.stringify( Product.allProducts);
+  // console.log(arrayString);
+
+  localStorage.setItem('product',arrayString);
+}
+
+// getting the data from the local storage
+function getProductData() {
+  // get the data from the local storage
+  let data=localStorage.getItem('product');
+
+
+  // convert them back to a normal array of objects
+  let productData=JSON.parse(data);
+ console.log(productData);
+  if (productData!==null) {   
+    Product.allProducts=productData;
+  }
+  getProductData();
+
+  // vote1 = product.votes.value;
+  // time1 = product.time.value;
+}
+
